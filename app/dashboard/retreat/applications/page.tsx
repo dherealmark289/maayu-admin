@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import DashboardLayout from '@/components/DashboardLayout';
 
 interface RetreatApplication {
@@ -25,11 +25,7 @@ export default function RetreatApplicationsPage() {
   const [viewingApp, setViewingApp] = useState<RetreatApplication | null>(null);
   const [showViewModal, setShowViewModal] = useState(false);
 
-  useEffect(() => {
-    fetchApplications();
-  }, [filterStatus]);
-
-  const fetchApplications = async () => {
+  const fetchApplications = useCallback(async () => {
     try {
       const token = localStorage.getItem('token');
       if (!token) {
@@ -61,7 +57,11 @@ export default function RetreatApplicationsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [filterStatus]);
+
+  useEffect(() => {
+    fetchApplications();
+  }, [fetchApplications]);
 
   const handleView = (app: RetreatApplication) => {
     setViewingApp(app);

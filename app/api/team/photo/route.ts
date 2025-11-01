@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getTokenFromRequest, verifyToken } from '@/lib/auth';
 import { uploadToS3WithFolder } from '@/lib/s3';
+import pool from '@/lib/db';
 
 // POST - Upload team photo to S3
 export async function POST(request: NextRequest) {

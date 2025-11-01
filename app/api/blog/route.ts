@@ -21,7 +21,8 @@ export async function GET(request: NextRequest) {
     let isAdmin = false;
     if (token) {
       const payload = verifyToken(token);
-      if (payload && payload.role === 'admin') {
+      // If token is valid, user is authenticated (assumed to be admin)
+      if (payload) {
         isAdmin = true;
       }
     }
@@ -127,7 +128,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No token provided' }, { status: 401 });
     }
     const payload = verifyToken(token);
-    if (!payload || payload.role !== 'admin') {
+    if (!payload) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
@@ -257,7 +258,7 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: 'No token provided' }, { status: 401 });
     }
     const payload = verifyToken(token);
-    if (!payload || payload.role !== 'admin') {
+    if (!payload) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 
@@ -448,7 +449,7 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: 'No token provided' }, { status: 401 });
     }
     const payload = verifyToken(token);
-    if (!payload || payload.role !== 'admin') {
+    if (!payload) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 

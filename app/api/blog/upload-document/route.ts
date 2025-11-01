@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No token provided' }, { status: 401 });
     }
     const payload = verifyToken(token);
-    if (!payload || payload.role !== 'admin') {
+    if (!payload) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
     }
 

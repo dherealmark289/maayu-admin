@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
+import Image from 'next/image';
 import DashboardLayout from '@/components/DashboardLayout';
 
 interface Accommodation {
@@ -163,7 +164,7 @@ export default function AccommodationPage() {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = (event) => {
-        const img = new Image();
+        const img = new window.Image();
         img.src = event.target?.result as string;
         
         img.onload = () => {
@@ -708,10 +709,13 @@ export default function AccommodationPage() {
                     <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 mt-3">
                       {formData.imageUrls.map((url, index) => (
                         <div key={index} className="relative">
-                          <img
+                          <Image
                             src={url}
                             alt={`Upload ${index + 1}`}
+                            width={200}
+                            height={96}
                             className="w-full h-24 object-cover rounded-lg border border-gray-300 dark:border-gray-600"
+                            unoptimized
                           />
                           <button
                             type="button"
@@ -826,10 +830,13 @@ export default function AccommodationPage() {
                     className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600"
                   >
                     {accommodation.imageUrls && accommodation.imageUrls.length > 0 && (
-                      <img
+                      <Image
                         src={accommodation.imageUrls[0]}
                         alt={accommodation.name}
+                        width={400}
+                        height={192}
                         className="w-full h-48 object-cover rounded-lg mb-3"
+                        unoptimized
                       />
                     )}
                     <h3 className="font-semibold text-gray-900 dark:text-white mb-2">{accommodation.name}</h3>

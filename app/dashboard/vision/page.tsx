@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
+import Image from 'next/image';
 import DashboardLayout from '@/components/DashboardLayout';
 
 interface Zone {
@@ -174,7 +175,7 @@ export default function VisionPage() {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = (event) => {
-        const img = new Image();
+        const img = new window.Image();
         img.src = event.target?.result as string;
         
         img.onload = () => {
@@ -455,9 +456,12 @@ export default function VisionPage() {
                       </button>
                       {zone.imageUrl && (
                         <div className="relative">
-                          <img
+                          <Image
                             src={zone.imageUrl}
                             alt={zone.title}
+                            width={400}
+                            height={300}
+                            unoptimized
                             className="w-32 h-32 object-cover rounded-lg border border-gray-300 dark:border-gray-600"
                           />
                           <button
@@ -569,9 +573,12 @@ export default function VisionPage() {
                   </button>
                   {visionContent.ecosystemImageUrl && (
                     <div className="relative">
-                      <img
+                      <Image
                         src={visionContent.ecosystemImageUrl}
                         alt="Ecosystem"
+                        width={400}
+                        height={300}
+                        unoptimized
                         className="w-32 h-32 object-cover rounded-lg border border-gray-300 dark:border-gray-600"
                       />
                       <button

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
+import Image from 'next/image';
 import DashboardLayout from '@/components/DashboardLayout';
 
 interface RetreatWorkshop {
@@ -191,7 +192,7 @@ export default function RetreatWorkshopsPage() {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = (event) => {
-        const img = new Image();
+        const img = new window.Image();
         img.src = event.target?.result as string;
         
         img.onload = () => {
@@ -326,8 +327,8 @@ export default function RetreatWorkshopsPage() {
       console.error('Error uploading images:', err);
       setError(err.message || 'Failed to upload images');
     } finally {
-      if (imageInputRef) {
-        imageInputRef.value = '';
+      if (imageInputRef.current) {
+        imageInputRef.current.value = '';
       }
     }
   };
@@ -524,7 +525,7 @@ export default function RetreatWorkshopsPage() {
           <div className="space-y-4">
             {workshops.length === 0 ? (
               <p className="text-gray-500 dark:text-gray-400 text-center py-12">
-                No workshops found. Click "Add Workshop" to create one.
+                No workshops found. Click &quot;Add Workshop&quot; to create one.
               </p>
             ) : (
               workshops.map((workshop) => (
@@ -885,10 +886,13 @@ export default function RetreatWorkshopsPage() {
                     <div className="grid grid-cols-3 gap-2 mt-2">
                       {formData.imageUrls.map((url, idx) => (
                         <div key={idx} className="relative">
-                          <img
+                          <Image
                             src={url}
                             alt={`Workshop image ${idx + 1}`}
+                            width={200}
+                            height={128}
                             className="w-full h-32 object-cover rounded border border-gray-300 dark:border-gray-600"
+                            unoptimized
                           />
                           <button
                             type="button"

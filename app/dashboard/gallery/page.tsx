@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
+import Image from 'next/image';
 import DashboardLayout from '@/components/DashboardLayout';
 
 interface GalleryAlbum {
@@ -225,7 +226,7 @@ export default function GalleryPage() {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = (event) => {
-        const img = new Image();
+        const img = new window.Image();
         img.src = event.target?.result as string;
         img.onload = () => {
           const canvas = document.createElement('canvas');
@@ -468,9 +469,12 @@ export default function GalleryPage() {
                 onClick={() => setSelectedAlbum(album)}
               >
                 {album.coverImageUrl ? (
-                  <img
+                  <Image
                     src={album.coverImageUrl}
                     alt={album.name}
+                    width={300}
+                    height={200}
+                    unoptimized
                     className="w-full h-48 object-cover"
                   />
                 ) : (
@@ -553,9 +557,12 @@ export default function GalleryPage() {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {albumImages.map((image) => (
                 <div key={image.id} className="relative group">
-                  <img
+                  <Image
                     src={image.url}
                     alt={image.alt || image.originalName}
+                    width={300}
+                    height={200}
+                    unoptimized
                     className="w-full h-48 object-cover rounded-lg"
                   />
                   <button
@@ -572,7 +579,7 @@ export default function GalleryPage() {
 
             {albumImages.length === 0 && (
               <div className="text-center py-12 text-gray-500 dark:text-gray-400">
-                No images in this album yet. Click "Add Images to Album" to upload images.
+                No images in this album yet. Click &quot;Add Images to Album&quot; to upload images.
               </div>
             )}
           </div>

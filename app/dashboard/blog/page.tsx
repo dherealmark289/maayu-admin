@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react';
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import DashboardLayout from '@/components/DashboardLayout';
 
 // Dynamically import ReactQuill to avoid SSR issues
@@ -108,16 +109,16 @@ export default function BlogPage() {
       }
 
       // Upload to S3 via media API
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('category', 'images');
+      const uploadFormData = new FormData();
+      uploadFormData.append('file', file);
+      uploadFormData.append('category', 'images');
 
       const response = await fetch('/api/media', {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        body: formData,
+        body: uploadFormData,
       });
 
       if (!response.ok) {
@@ -126,7 +127,7 @@ export default function BlogPage() {
       }
 
       const data = await response.json();
-      setFormData({ ...formData, featuredImage: data.media.url });
+      setFormData((prev) => ({ ...prev, featuredImage: data.media.url }));
       setError('');
     } catch (err: any) {
       console.error('Error uploading image:', err);
@@ -316,12 +317,12 @@ export default function BlogPage() {
       }
 
       // Upload Word document and convert to HTML
-      const formData = new FormData();
-      formData.append('document', file);
+      const uploadFormData = new FormData();
+      uploadFormData.append('document', file);
       
       // If editing existing post, include blogPostId so images are linked
       if (editingPost?.id) {
-        formData.append('blogPostId', editingPost.id);
+        uploadFormData.append('blogPostId', editingPost.id);
       }
 
       const response = await fetch('/api/blog/upload-document', {
@@ -329,7 +330,7 @@ export default function BlogPage() {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        body: formData,
+        body: uploadFormData,
       });
 
       if (!response.ok) {
@@ -340,7 +341,7 @@ export default function BlogPage() {
       const data = await response.json();
       
       // Set the converted HTML content
-      setFormData({ ...formData, content: data.html });
+      setFormData((prev) => ({ ...prev, content: data.html }));
       
       if (data.warnings && data.warnings.length > 0) {
         console.warn('Document conversion warnings:', data.warnings);
@@ -382,16 +383,16 @@ export default function BlogPage() {
         }
 
         // Upload to S3 via media API
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('category', 'images');
+        const uploadFormData = new FormData();
+        uploadFormData.append('file', file);
+        uploadFormData.append('category', 'images');
 
         const response = await fetch('/api/media', {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          body: formData,
+          body: uploadFormData,
         });
 
         if (!response.ok) {
@@ -567,10 +568,13 @@ export default function BlogPage() {
                   </button>
                   {formData.featuredImage && (
                     <div className="mt-3">
-                      <img
+                      <Image
                         src={formData.featuredImage}
                         alt="Featured"
+                        width={400}
+                        height={192}
                         className="w-full max-w-md h-48 object-cover rounded-lg border border-gray-300 dark:border-gray-600"
+                        unoptimized
                       />
                       <button
                         type="button"

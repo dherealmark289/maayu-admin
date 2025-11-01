@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
+import Image from 'next/image';
 import DashboardLayout from '@/components/DashboardLayout';
 
 interface Animal {
@@ -51,7 +52,7 @@ export default function AnimalsPage() {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = (event) => {
-        const img = new Image();
+        const img = new window.Image();
         img.src = event.target?.result as string;
         
         img.onload = () => {
@@ -492,9 +493,12 @@ export default function AnimalsPage() {
                     <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 mt-3">
                       {formData.photoUrls.map((url, index) => (
                         <div key={index} className="relative">
-                          <img
+                          <Image
                             src={url}
                             alt={`Upload ${index + 1}`}
+                            width={200}
+                            height={96}
+                            unoptimized
                             className="w-full h-24 object-cover rounded-lg border border-gray-300 dark:border-gray-600"
                           />
                           <button
@@ -560,9 +564,12 @@ export default function AnimalsPage() {
                     className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600"
                   >
                     {animal.photoUrls && animal.photoUrls.length > 0 && (
-                      <img
+                      <Image
                         src={animal.photoUrls[0]}
                         alt={animal.name}
+                        width={400}
+                        height={192}
+                        unoptimized
                         className="w-full h-48 object-cover rounded-lg mb-3"
                       />
                     )}

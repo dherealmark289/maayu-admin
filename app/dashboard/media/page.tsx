@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
+import Image from 'next/image';
 import DashboardLayout from '@/components/DashboardLayout';
 
 interface MediaFile {
@@ -100,7 +101,7 @@ export default function MediaPage() {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = (event) => {
-        const img = new Image();
+        const img = new window.Image();
         img.src = event.target?.result as string;
         
         img.onload = () => {
@@ -630,10 +631,13 @@ export default function MediaPage() {
                       />
                     </div>
                     {isImage(file.mimeType) ? (
-                      <img
+                      <Image
                         src={getFileUrl(file)}
                         alt={file.alt || file.originalName}
+                        width={400}
+                        height={192}
                         className="w-full h-48 object-cover rounded-lg mb-3"
+                        unoptimized
                       />
                     ) : isVideo(file.mimeType) ? (
                       <div className="relative w-full h-48 bg-gray-200 dark:bg-gray-600 rounded-lg mb-3 overflow-hidden">

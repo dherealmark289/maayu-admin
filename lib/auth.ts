@@ -1,9 +1,9 @@
-import jwt from 'jsonwebtoken';
+import jwt, { SignOptions } from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { NextRequest } from 'next/server';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-this';
-const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
+const JWT_SECRET: string | undefined = process.env.JWT_SECRET;
+const JWT_EXPIRES_IN: string = process.env.JWT_EXPIRES_IN || '7d';
 
 export interface TokenPayload {
   email: string;
@@ -11,14 +11,22 @@ export interface TokenPayload {
 }
 
 export function generateToken(payload: TokenPayload): string {
-  return jwt.sign(payload, JWT_SECRET, {
+  if (!JWT_SECRET) {
+    throw new Error('JWT_SECRET environment variable is not set. Please set it in your .env.local file.');
+  }
+  const secret: string = JWT_SECRET;
+  return jwt.sign(payload, secret, {
     expiresIn: JWT_EXPIRES_IN,
-  });
+  } as SignOptions);
 }
 
 export function verifyToken(token: string): TokenPayload | null {
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as TokenPayload;
+    if (!JWT_SECRET) {
+      throw new Error('JWT_SECRET environment variable is not set. Please set it in your .env.local file.');
+    }
+    const secret: string = JWT_SECRET;
+    const decoded = jwt.verify(token, secret) as TokenPayload;
     return decoded;
   } catch (error) {
     return null;

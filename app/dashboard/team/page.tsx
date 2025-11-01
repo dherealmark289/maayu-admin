@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
+import Image from 'next/image';
 import DashboardLayout from '@/components/DashboardLayout';
 
 interface TeamMember {
@@ -201,7 +202,7 @@ export default function TeamPage() {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = (event) => {
-        const img = new Image();
+        const img = new window.Image();
         img.src = event.target?.result as string;
         
         img.onload = () => {
@@ -307,11 +308,11 @@ export default function TeamPage() {
       reader.readAsDataURL(fileToUpload);
 
       // Upload to S3 via team API
-      const formData = new FormData();
-      formData.append('photo', fileToUpload);
+      const uploadFormData = new FormData();
+      uploadFormData.append('photo', fileToUpload);
       // Pass teamMemberId if editing existing team member
       if (editingMember?.id) {
-        formData.append('teamMemberId', editingMember.id);
+        uploadFormData.append('teamMemberId', editingMember.id);
       }
 
       const response = await fetch('/api/team/photo', {
@@ -319,7 +320,7 @@ export default function TeamPage() {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-        body: formData,
+        body: uploadFormData,
       });
 
       if (!response.ok) {
@@ -328,7 +329,7 @@ export default function TeamPage() {
       }
 
       const data = await response.json();
-      setFormData({ ...formData, photoUrl: data.url });
+      setFormData((prev) => ({ ...prev, photoUrl: data.url }));
       setError('');
     } catch (err: any) {
       console.error('Error uploading photo:', err);
@@ -499,10 +500,13 @@ export default function TeamPage() {
                     </button>
                     {(photoPreview || formData.photoUrl) && (
                       <div className="relative">
-                        <img
+                        <Image
                           src={photoPreview || formData.photoUrl}
                           alt="Preview"
+                          width={400}
+                          height={400}
                           className="w-24 h-24 object-cover rounded-lg border border-gray-300 dark:border-gray-600"
+                          unoptimized
                         />
                         <button
                           type="button"
@@ -651,9 +655,12 @@ export default function TeamPage() {
                           className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600"
                         >
                           {member.photoUrl && (
-                            <img
+                            <Image
                               src={member.photoUrl}
                               alt={member.name}
+                              width={400}
+                              height={400}
+                              unoptimized
                               className="w-full h-48 object-cover rounded-lg mb-3"
                             />
                           )}

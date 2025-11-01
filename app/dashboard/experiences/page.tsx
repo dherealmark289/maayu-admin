@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
+import Image from 'next/image';
 import DashboardLayout from '@/components/DashboardLayout';
 
 interface Experience {
@@ -273,7 +274,7 @@ export default function ExperiencesPage() {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = (event) => {
-        const img = new Image();
+        const img = new window.Image();
         img.src = event.target?.result as string;
         
         img.onload = () => {
@@ -630,7 +631,7 @@ export default function ExperiencesPage() {
           <div className="space-y-4">
             {experiences.length === 0 ? (
               <p className="text-gray-500 dark:text-gray-400 text-center py-12">
-                No experiences found. Click "Add Experience" to create one.
+                No experiences found. Click &quot;Add Experience&quot; to create one.
               </p>
             ) : (
               experiences.map((experience) => (
@@ -803,7 +804,7 @@ export default function ExperiencesPage() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                    What's Included
+                    What&apos;s Included
                   </label>
                   <div className="flex gap-2 mb-2">
                     <input
@@ -947,9 +948,12 @@ export default function ExperiencesPage() {
                     <div className="grid grid-cols-3 gap-2 mt-2">
                       {formData.imageUrls.map((url, idx) => (
                         <div key={idx} className="relative">
-                          <img
+                          <Image
                             src={url}
                             alt={`Experience image ${idx + 1}`}
+                            width={200}
+                            height={128}
+                            unoptimized
                             className="w-full h-32 object-cover rounded border border-gray-300 dark:border-gray-600"
                           />
                           <button
