@@ -2,14 +2,59 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Mobile-responsive dashboard styles */
+@media (max-width: 640px) {
+  /* Dashboard page containers */
+  .dashboard-page-container {
+    padding: 1rem !important;
+  }
+  
+  /* Dashboard headers */
+  .dashboard-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 1rem !important;
+  }
+  
+  .dashboard-header-buttons {
+    width: 100%;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .dashboard-header-buttons button {
+    width: 100%;
+  }
+  
+  /* Dashboard grids - force single column on mobile */
+  .dashboard-grid-2 {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .dashboard-grid-3 {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Forms - stack on mobile */
+  .dashboard-form-grid {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Modal/dialog responsive */
+  .dashboard-modal {
+    margin: 1rem !important;
+    max-width: calc(100% - 2rem) !important;
+  }
+}
+
 :root {
-  --background: #ffffff;
+  --background: #f9fafb;
   --foreground: #171717;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #111827;
     --foreground: #ededed;
   }
 }

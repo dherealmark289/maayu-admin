@@ -6,10 +6,18 @@ import { usePathname } from 'next/navigation';
 interface SidebarProps {
   onSignOut: () => void;
   user: { email: string; role?: string } | null;
+  isOpen?: boolean;
+  onClose?: () => void;
 }
 
-export default function Sidebar({ onSignOut, user }: SidebarProps) {
+export default function Sidebar({ onSignOut, user, isOpen = false, onClose }: SidebarProps) {
   const pathname = usePathname();
+  
+  const handleLinkClick = () => {
+    if (onClose && window.innerWidth < 1024) {
+      onClose();
+    }
+  };
 
   const menuItems = [
     {
@@ -106,9 +114,20 @@ export default function Sidebar({ onSignOut, user }: SidebarProps) {
   ];
 
   return (
-    <div className="fixed inset-y-0 left-0 w-64 bg-gray-900 text-white flex flex-col">
-      <div className="flex items-center justify-center h-16 bg-gray-800 border-b border-gray-700">
+    <div className={`fixed inset-y-0 left-0 w-64 bg-gray-900 text-white flex flex-col z-50 transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+      isOpen ? 'translate-x-0' : '-translate-x-full'
+    }`}>
+      <div className="flex items-center justify-between h-16 bg-gray-800 border-b border-gray-700 px-4">
         <h1 className="text-xl font-bold">Mayu Admin</h1>
+        <button
+          onClick={onClose}
+          className="lg:hidden p-2 rounded-md text-gray-300 hover:text-white hover:bg-gray-700"
+          aria-label="Close menu"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
       </div>
 
       <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
@@ -118,6 +137,7 @@ export default function Sidebar({ onSignOut, user }: SidebarProps) {
             <Link
               key={item.href}
               href={item.href}
+              onClick={handleLinkClick}
               className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
                 isActive
                   ? 'bg-indigo-600 text-white'

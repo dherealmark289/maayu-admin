@@ -253,15 +253,6 @@ export default function ExperiencesPage() {
     setShowForm(true);
   };
 
-  const handleLoadDefault = () => {
-    setEditingExperience(null);
-    const defaultExp = DEFAULT_EXPERIENCES[0];
-    setFormData({
-      ...defaultExp,
-      imageUrls: [],
-    });
-    setShowForm(true);
-  };
 
   // Compress image using Canvas API
   const compressImage = (file: File, maxSizeKB: number = 500, quality: number = 0.85): Promise<File> => {
@@ -524,88 +515,26 @@ export default function ExperiencesPage() {
     });
   };
 
-  const loadAllDefaults = async () => {
-    if (!confirm('This will create all 6 default experiences. Continue?')) return;
-
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        setError('Not authenticated');
-        return;
-      }
-
-      setError('');
-      let successCount = 0;
-      let errorCount = 0;
-
-      for (const defaultExp of DEFAULT_EXPERIENCES) {
-        try {
-          const response = await fetch('/api/experiences', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-              ...defaultExp,
-              imageUrls: [],
-            }),
-          });
-
-          if (response.ok) {
-            successCount++;
-          } else {
-            errorCount++;
-          }
-        } catch (err) {
-          errorCount++;
-        }
-      }
-
-      if (successCount > 0) {
-        await fetchExperiences();
-        setError(`Created ${successCount} experiences${errorCount > 0 ? `, ${errorCount} failed` : ''}`);
-        setTimeout(() => setError(''), 3000);
-      } else {
-        setError('Failed to create experiences');
-      }
-    } catch (err: any) {
-      console.error('Error loading defaults:', err);
-      setError(err.message || 'Failed to load default experiences');
-    }
-  };
 
   return (
     <DashboardLayout>
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 lg:p-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+          <h1 className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white">
             Experiences
           </h1>
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
             <button
               onClick={fetchExperiences}
-              className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors text-sm font-medium"
+              className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors text-sm font-medium w-full sm:w-auto"
             >
               Refresh
             </button>
             <button
               onClick={handleAdd}
-              className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors text-sm font-medium"
+              className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors text-sm font-medium w-full sm:w-auto"
             >
               Add Experience
-            </button>
-            <button
-              onClick={handleLoadDefault}
-              className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors text-sm font-medium"
-            >
-              Load Default
-            </button>
-            <button
-              onClick={loadAllDefaults}
-              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm font-medium"
-            >
-              Load All Defaults
             </button>
           </div>
         </div>
@@ -637,12 +566,12 @@ export default function ExperiencesPage() {
               experiences.map((experience) => (
                 <div
                   key={experience.id}
-                  className="border border-gray-200 dark:border-gray-700 rounded-lg p-4"
+                  className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600"
                 >
-                  <div className="flex justify-between items-start">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
+                    <div className="flex-1 w-full">
+                      <div className="flex flex-wrap items-center gap-2 mb-2">
+                        <h3 className="text-base lg:text-lg font-semibold text-gray-900 dark:text-white">
                           {experience.title}
                         </h3>
                         {experience.badge && (
@@ -669,21 +598,42 @@ export default function ExperiencesPage() {
                         )}
                       </div>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                       <button
                         onClick={() => handleEdit(experience)}
-                        className="px-3 py-1 text-sm bg-indigo-600 hover:bg-indigo-700 text-white rounded transition-colors"
+                        className="px-3 py-2 text-sm bg-indigo-600 hover:bg-indigo-700 text-white rounded transition-colors w-full sm:w-auto"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => handleDelete(experience.id)}
-                        className="px-3 py-1 text-sm bg-red-600 hover:bg-red-700 text-white rounded transition-colors"
+                        className="px-3 py-2 text-sm bg-red-600 hover:bg-red-700 text-white rounded transition-colors w-full sm:w-auto"
                       >
                         Delete
                       </button>
                     </div>
                   </div>
+                  {experience.imageUrls && experience.imageUrls.length > 0 && (
+                    <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
+                      <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        Images ({experience.imageUrls.length})
+                      </p>
+                      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                        {experience.imageUrls.map((url, idx) => (
+                          <div key={idx} className="relative aspect-square rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600">
+                            <Image
+                              src={url}
+                              alt={`${experience.title} - Image ${idx + 1}`}
+                              fill
+                              className="object-cover"
+                              sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, 20vw"
+                              unoptimized
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))
             )}
@@ -691,13 +641,13 @@ export default function ExperiencesPage() {
         )}
 
         {showForm && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start sm:items-center justify-center z-50 p-2 sm:p-4 overflow-y-auto">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-4 lg:p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
               <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
                 {editingExperience ? 'Edit Experience' : 'Add Experience'}
               </h2>
               <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Title *
@@ -706,7 +656,7 @@ export default function ExperiencesPage() {
                       type="text"
                       value={formData.title}
                       onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                       required
                     />
                   </div>
@@ -718,7 +668,7 @@ export default function ExperiencesPage() {
                       type="text"
                       value={formData.category}
                       onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                       placeholder="e.g., Wellness, Adventure, Farm Life"
                     />
                   </div>
@@ -732,11 +682,11 @@ export default function ExperiencesPage() {
                     type="text"
                     value={formData.subtitle}
                     onChange={(e) => setFormData({ ...formData, subtitle: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                   />
                 </div>
 
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Duration
@@ -745,7 +695,7 @@ export default function ExperiencesPage() {
                       type="text"
                       value={formData.duration}
                       onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                       placeholder="e.g., 60 min"
                     />
                   </div>
@@ -757,7 +707,7 @@ export default function ExperiencesPage() {
                       type="number"
                       value={formData.priceTHB || 0}
                       onChange={(e) => setFormData({ ...formData, priceTHB: parseInt(e.target.value) || 0 })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                       min="0"
                     />
                   </div>
@@ -769,13 +719,13 @@ export default function ExperiencesPage() {
                       type="text"
                       value={formData.difficulty}
                       onChange={(e) => setFormData({ ...formData, difficulty: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                       placeholder="e.g., All levels"
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Capacity
@@ -784,7 +734,7 @@ export default function ExperiencesPage() {
                       type="text"
                       value={formData.capacity}
                       onChange={(e) => setFormData({ ...formData, capacity: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                       placeholder="e.g., Up to 8"
                     />
                   </div>
@@ -796,7 +746,7 @@ export default function ExperiencesPage() {
                       type="text"
                       value={formData.schedule}
                       onChange={(e) => setFormData({ ...formData, schedule: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                       placeholder="e.g., Wed & Sat, 5:30 pm"
                     />
                   </div>
@@ -806,13 +756,13 @@ export default function ExperiencesPage() {
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     What&apos;s Included
                   </label>
-                  <div className="flex gap-2 mb-2">
+                  <div className="flex flex-col sm:flex-row gap-2 mb-2">
                     <input
                       type="text"
                       value={newInclude}
                       onChange={(e) => setNewInclude(e.target.value)}
                       onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addInclude())}
-                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                       placeholder="Add item"
                     />
                     <button
@@ -843,13 +793,13 @@ export default function ExperiencesPage() {
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     What to Bring
                   </label>
-                  <div className="flex gap-2 mb-2">
+                  <div className="flex flex-col sm:flex-row gap-2 mb-2">
                     <input
                       type="text"
                       value={newBring}
                       onChange={(e) => setNewBring(e.target.value)}
                       onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addBring())}
-                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                       placeholder="Add item"
                     />
                     <button
@@ -876,7 +826,7 @@ export default function ExperiencesPage() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       CTA Button Text
@@ -885,7 +835,7 @@ export default function ExperiencesPage() {
                       type="text"
                       value={formData.cta}
                       onChange={(e) => setFormData({ ...formData, cta: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                       placeholder="e.g., Book Ice Bath"
                     />
                   </div>
@@ -897,7 +847,7 @@ export default function ExperiencesPage() {
                       type="text"
                       value={formData.link}
                       onChange={(e) => setFormData({ ...formData, link: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                       placeholder="e.g., /book?exp=ice-bath"
                     />
                   </div>
@@ -911,7 +861,7 @@ export default function ExperiencesPage() {
                     type="text"
                     value={formData.badge}
                     onChange={(e) => setFormData({ ...formData, badge: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                     placeholder="e.g., Popular, Sunrise, Workshop"
                   />
                 </div>
@@ -931,7 +881,7 @@ export default function ExperiencesPage() {
                     multiple
                     onChange={handleImageSelect}
                     ref={imageInputRef}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white mb-2"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white mb-2"
                     disabled={!formData.title || (formData.imageUrls?.length || 0) >= 10}
                   />
                   {!formData.title && (
@@ -945,7 +895,7 @@ export default function ExperiencesPage() {
                     </p>
                   )}
                   {formData.imageUrls && formData.imageUrls.length > 0 && (
-                    <div className="grid grid-cols-3 gap-2 mt-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-2">
                       {formData.imageUrls.map((url, idx) => (
                         <div key={idx} className="relative">
                           <Image
@@ -970,7 +920,7 @@ export default function ExperiencesPage() {
                   )}
                 </div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                   <label className="flex items-center">
                     <input
                       type="checkbox"
@@ -990,25 +940,25 @@ export default function ExperiencesPage() {
                       type="number"
                       value={formData.order}
                       onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) || 0 })}
-                      className="w-24 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      className="w-full sm:w-24 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                     />
                   </div>
                 </div>
 
-                <div className="flex justify-end gap-3 pt-4">
+                <div className="flex flex-col sm:flex-row justify-end gap-3 pt-4">
                   <button
                     type="button"
                     onClick={() => {
                       setShowForm(false);
                       setEditingExperience(null);
                     }}
-                    className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
+                    className="w-full sm:w-auto px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors"
+                    className="w-full sm:w-auto px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors"
                   >
                     {editingExperience ? 'Update' : 'Create'} Experience
                   </button>

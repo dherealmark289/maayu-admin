@@ -384,12 +384,12 @@ export default function AnimalsPage() {
 
   return (
     <DashboardLayout>
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Animal Profiles</h1>
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 lg:p-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+          <h1 className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white">Animal Profiles</h1>
           <button
             onClick={() => setShowForm(true)}
-            className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors text-sm font-medium"
+            className="w-full sm:w-auto px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors text-sm font-medium"
           >
             Add Animal
           </button>
@@ -403,12 +403,12 @@ export default function AnimalsPage() {
 
         {/* Add/Edit Form */}
         {showForm && (
-          <div className="mb-6 p-6 bg-gray-50 dark:bg-gray-700 rounded-lg">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+          <div className="mb-6 p-4 lg:p-6 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+            <h2 className="text-lg lg:text-xl font-semibold text-gray-900 dark:text-white mb-4">
               {editingAnimal ? 'Edit Animal' : 'Add Animal'}
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Name *
@@ -490,7 +490,7 @@ export default function AnimalsPage() {
                     {uploadingImages ? 'Uploading...' : 'Upload Photos'}
                   </button>
                   {formData.photoUrls.length > 0 && (
-                    <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 mt-3">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 mt-3">
                       {formData.photoUrls.map((url, index) => (
                         <div key={index} className="relative">
                           <Image
@@ -525,17 +525,17 @@ export default function AnimalsPage() {
                   />
                 </div>
               </div>
-              <div className="flex justify-end space-x-3">
+              <div className="flex flex-col sm:flex-row justify-end gap-3">
                 <button
                   type="button"
                   onClick={cancelForm}
-                  className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600"
+                  className="w-full sm:w-auto px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg"
+                  className="w-full sm:w-auto px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg"
                 >
                   {editingAnimal ? 'Update' : 'Create'}
                 </button>
@@ -620,7 +620,7 @@ export default function AnimalsPage() {
               <p className="text-gray-600 dark:text-gray-300 mb-6">
                 Are you sure you want to delete <strong>{confirmDelete.name}</strong>? This action cannot be undone.
               </p>
-              <div className="flex justify-end space-x-3">
+              <div className="flex flex-col sm:flex-row justify-end gap-3">
                 <button
                   onClick={() => setConfirmDelete(null)}
                   className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg"

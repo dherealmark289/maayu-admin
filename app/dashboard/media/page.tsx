@@ -393,15 +393,15 @@ export default function MediaPage() {
 
   return (
     <DashboardLayout>
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Media Library</h1>
-          <div className="flex gap-2 items-center">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 lg:p-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+          <h1 className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white">Media Library</h1>
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
             {selectedFiles.size > 0 && (
               <button
                 onClick={() => setConfirmBulkDelete(selectedFiles.size)}
                 disabled={deletingIds.length > 0}
-                className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors text-sm font-medium disabled:opacity-50"
+                className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors text-sm font-medium disabled:opacity-50 w-full sm:w-auto"
               >
                 {deletingIds.length > 0 ? 'Deleting...' : `Delete Selected (${selectedFiles.size})`}
               </button>
@@ -409,7 +409,7 @@ export default function MediaPage() {
             <button
               onClick={handleSyncFromS3}
               disabled={loading}
-              className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors text-sm font-medium disabled:opacity-50"
+              className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors text-sm font-medium disabled:opacity-50 w-full sm:w-auto"
               title="Sync files from S3 bucket"
             >
               {loading ? 'Syncing...' : 'Sync from S3'}
@@ -417,7 +417,7 @@ export default function MediaPage() {
             <button
               onClick={() => fileInputRef.current?.click()}
               disabled={uploading}
-              className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors text-sm font-medium disabled:opacity-50"
+              className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors text-sm font-medium disabled:opacity-50 w-full sm:w-auto"
             >
               {uploading ? 'Uploading...' : 'Upload File'}
             </button>
@@ -425,14 +425,14 @@ export default function MediaPage() {
         </div>
 
         {/* Upload Form */}
-        <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+        <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
           <input
             ref={fileInputRef}
             type="file"
             onChange={handleFileSelect}
             className="hidden"
           />
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Category
@@ -727,23 +727,23 @@ export default function MediaPage() {
 
         {/* Delete Confirmation Modal */}
         {confirmDelete && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 max-w-md w-full mx-4">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start sm:items-center justify-center z-50 p-2 sm:p-4 overflow-y-auto">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-4 lg:p-6 max-w-md w-full">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Confirm Delete</h3>
               <p className="text-gray-600 dark:text-gray-300 mb-6">
                 Are you sure you want to delete <strong>{confirmDelete.name}</strong>? This action cannot be undone.
               </p>
-              <div className="flex justify-end space-x-3">
+              <div className="flex flex-col sm:flex-row justify-end gap-3">
                 <button
                   onClick={() => setConfirmDelete(null)}
-                  className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg"
+                  className="w-full sm:w-auto px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={confirmDeleteAction}
                   disabled={deletingId !== null}
-                  className="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg disabled:opacity-50"
+                  className="w-full sm:w-auto px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg disabled:opacity-50"
                 >
                   {deletingId !== null ? 'Deleting...' : 'Delete'}
                 </button>
@@ -754,23 +754,23 @@ export default function MediaPage() {
 
         {/* Bulk Delete Confirmation Modal */}
         {confirmBulkDelete !== null && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 max-w-md w-full mx-4">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start sm:items-center justify-center z-50 p-2 sm:p-4 overflow-y-auto">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-4 lg:p-6 max-w-md w-full">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Confirm Bulk Delete</h3>
               <p className="text-gray-600 dark:text-gray-300 mb-6">
                 Are you sure you want to delete <strong>{confirmBulkDelete} file(s)</strong>? This action cannot be undone.
               </p>
-              <div className="flex justify-end space-x-3">
+              <div className="flex flex-col sm:flex-row justify-end gap-3">
                 <button
                   onClick={() => setConfirmBulkDelete(null)}
-                  className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg"
+                  className="w-full sm:w-auto px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleBulkDelete}
                   disabled={deletingIds.length > 0}
-                  className="px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg disabled:opacity-50"
+                  className="w-full sm:w-auto px-4 py-2 text-sm font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg disabled:opacity-50"
                 >
                   {deletingIds.length > 0 ? 'Deleting...' : `Delete ${confirmBulkDelete} file(s)`}
                 </button>

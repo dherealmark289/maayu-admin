@@ -511,12 +511,12 @@ export default function AccommodationPage() {
 
   return (
     <DashboardLayout>
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Accommodation</h1>
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 lg:p-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+          <h1 className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white">Accommodation</h1>
           <button
             onClick={() => setShowForm(true)}
-            className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors text-sm font-medium"
+            className="w-full sm:w-auto px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors text-sm font-medium"
           >
             Add Accommodation
           </button>
@@ -530,12 +530,12 @@ export default function AccommodationPage() {
 
         {/* Add/Edit Form */}
         {showForm && (
-          <div className="mb-6 p-6 bg-gray-50 dark:bg-gray-700 rounded-lg">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+          <div className="mb-6 p-4 lg:p-6 bg-gray-50 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
+            <h2 className="text-lg lg:text-xl font-semibold text-gray-900 dark:text-white mb-4">
               {editingAccommodation ? 'Edit Accommodation' : 'Add Accommodation'}
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Property Name *
@@ -632,7 +632,7 @@ export default function AccommodationPage() {
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                   />
                 </div>
-                <div className="col-span-2">
+                <div className="col-span-1 sm:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Description
                   </label>
@@ -645,11 +645,11 @@ export default function AccommodationPage() {
                 </div>
                 
                 {/* What This Place Offers */}
-                <div className="col-span-2">
+                <div className="col-span-1 sm:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                     What This Place Offers
                   </label>
-                  <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 mb-3">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 mb-3">
                     {WHAT_OFFERS_OPTIONS.map((option) => (
                       <label key={option} className="flex items-center space-x-2 cursor-pointer">
                         <input
@@ -671,7 +671,7 @@ export default function AccommodationPage() {
                   />
                 </div>
 
-                <div className="col-span-2">
+                <div className="col-span-1 sm:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Amenities (comma-separated)
                   </label>
@@ -685,7 +685,7 @@ export default function AccommodationPage() {
                 </div>
 
                 {/* Image Upload */}
-                <div className="col-span-2">
+                <div className="col-span-1 sm:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Images
                   </label>
@@ -706,7 +706,7 @@ export default function AccommodationPage() {
                     {uploadingImages ? 'Uploading...' : 'Upload Images'}
                   </button>
                   {formData.imageUrls.length > 0 && (
-                    <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 mt-3">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 mt-3">
                       {formData.imageUrls.map((url, index) => (
                         <div key={index} className="relative">
                           <Image
@@ -730,7 +730,7 @@ export default function AccommodationPage() {
                   )}
                 </div>
 
-                <div className="col-span-2">
+                <div className="col-span-1 sm:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     House Rules
                   </label>
@@ -742,7 +742,7 @@ export default function AccommodationPage() {
                   />
                 </div>
 
-                <div className="col-span-2">
+                <div className="col-span-1 sm:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Location
                   </label>
@@ -754,7 +754,7 @@ export default function AccommodationPage() {
                   />
                 </div>
 
-                <div className="col-span-2">
+                <div className="col-span-1 sm:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Safety
                   </label>
@@ -766,7 +766,7 @@ export default function AccommodationPage() {
                   />
                 </div>
 
-                <div className="col-span-2">
+                <div className="col-span-1 sm:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     URL (Airbnb/Booking Website)
                   </label>
@@ -791,17 +791,17 @@ export default function AccommodationPage() {
                   </label>
                 </div>
               </div>
-              <div className="flex justify-end space-x-3">
+              <div className="flex flex-col sm:flex-row justify-end gap-3">
                 <button
                   type="button"
                   onClick={cancelForm}
-                  className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600"
+                  className="w-full sm:w-auto px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg"
+                  className="w-full sm:w-auto px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg"
                 >
                   {editingAccommodation ? 'Update' : 'Create'}
                 </button>
@@ -871,21 +871,21 @@ export default function AccommodationPage() {
                         {accommodation.description}
                       </p>
                     )}
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
                       <span className={`px-2 py-1 text-xs rounded ${accommodation.available ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'}`}>
                         {accommodation.available ? 'Available' : 'Unavailable'}
                       </span>
-                      <div className="flex space-x-2">
+                      <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                         <button
                           onClick={() => handleEdit(accommodation)}
-                          className="px-3 py-1 text-sm bg-indigo-600 hover:bg-indigo-700 text-white rounded"
+                          className="px-3 py-2 text-sm bg-indigo-600 hover:bg-indigo-700 text-white rounded w-full sm:w-auto"
                         >
                           Edit
                         </button>
                         <button
                           onClick={() => handleDelete(accommodation.id, accommodation.name)}
                           disabled={deletingId === accommodation.id}
-                          className="px-3 py-1 text-sm bg-red-600 hover:bg-red-700 text-white rounded disabled:opacity-50"
+                          className="px-3 py-2 text-sm bg-red-600 hover:bg-red-700 text-white rounded disabled:opacity-50 w-full sm:w-auto"
                         >
                           {deletingId === accommodation.id ? 'Deleting...' : 'Delete'}
                         </button>
@@ -906,7 +906,7 @@ export default function AccommodationPage() {
               <p className="text-gray-600 dark:text-gray-300 mb-6">
                 Are you sure you want to delete <strong>{confirmDelete.name}</strong>? This action cannot be undone.
               </p>
-              <div className="flex justify-end space-x-3">
+              <div className="flex flex-col sm:flex-row justify-end gap-3">
                 <button
                   onClick={() => setConfirmDelete(null)}
                   className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg"

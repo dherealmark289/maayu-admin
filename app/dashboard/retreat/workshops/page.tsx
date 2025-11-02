@@ -175,11 +175,6 @@ export default function RetreatWorkshopsPage() {
     setShowForm(true);
   };
 
-  const handleLoadDefault = () => {
-    setEditingWorkshop(null);
-    setFormData({ ...defaultWorkshopContent, imageUrls: [] });
-    setShowForm(true);
-  };
 
   // Compress image using Canvas API
   const compressImage = (file: File, maxSizeKB: number = 500, quality: number = 0.85): Promise<File> => {
@@ -484,29 +479,23 @@ export default function RetreatWorkshopsPage() {
 
   return (
     <DashboardLayout>
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 lg:p-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+          <h1 className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white">
             Retreat Workshops
           </h1>
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
             <button
               onClick={fetchWorkshops}
-              className="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors text-sm font-medium"
+              className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors text-sm font-medium w-full sm:w-auto"
             >
               Refresh
             </button>
             <button
               onClick={handleAdd}
-              className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors text-sm font-medium"
+              className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors text-sm font-medium w-full sm:w-auto"
             >
               Add Workshop
-            </button>
-            <button
-              onClick={handleLoadDefault}
-              className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors text-sm font-medium"
-            >
-              Load Default Workshop
             </button>
           </div>
         </div>
@@ -531,12 +520,12 @@ export default function RetreatWorkshopsPage() {
               workshops.map((workshop) => (
                 <div
                   key={workshop.id}
-                  className="border border-gray-200 dark:border-gray-700 rounded-lg p-4"
+                  className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600"
                 >
-                  <div className="flex justify-between items-start">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
+                    <div className="flex-1 w-full">
+                      <div className="flex flex-wrap items-center gap-2 mb-2">
+                        <h3 className="text-base lg:text-lg font-semibold text-gray-900 dark:text-white">
                           {workshop.title}
                         </h3>
                         {workshop.published && (
@@ -556,16 +545,16 @@ export default function RetreatWorkshopsPage() {
                         </p>
                       )}
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
                       <button
                         onClick={() => handleEdit(workshop)}
-                        className="px-3 py-1 text-sm bg-indigo-600 hover:bg-indigo-700 text-white rounded transition-colors"
+                        className="px-3 py-2 text-sm bg-indigo-600 hover:bg-indigo-700 text-white rounded transition-colors w-full sm:w-auto"
                       >
                         Edit
                       </button>
                       <button
                         onClick={() => handleDelete(workshop.id)}
-                        className="px-3 py-1 text-sm bg-red-600 hover:bg-red-700 text-white rounded transition-colors"
+                        className="px-3 py-2 text-sm bg-red-600 hover:bg-red-700 text-white rounded transition-colors w-full sm:w-auto"
                       >
                         Delete
                       </button>
@@ -578,8 +567,8 @@ export default function RetreatWorkshopsPage() {
         )}
 
         {showForm && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 overflow-y-auto">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-start sm:items-center justify-center z-50 p-2 sm:p-4 overflow-y-auto">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-4 lg:p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
               <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
                 {editingWorkshop ? 'Edit Workshop' : 'Add Workshop'}
               </h2>
@@ -592,12 +581,12 @@ export default function RetreatWorkshopsPage() {
                     type="text"
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                     required
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                       Dates
@@ -606,7 +595,7 @@ export default function RetreatWorkshopsPage() {
                       type="text"
                       value={formData.dates}
                       onChange={(e) => setFormData({ ...formData, dates: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                       placeholder="February 17 – 27, 2026"
                     />
                   </div>
@@ -618,7 +607,7 @@ export default function RetreatWorkshopsPage() {
                       type="text"
                       value={formData.location}
                       onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                       placeholder="Ma Yu Farm, Chiang Dao, Thailand"
                     />
                   </div>
@@ -632,7 +621,7 @@ export default function RetreatWorkshopsPage() {
                     value={formData.overview}
                     onChange={(e) => setFormData({ ...formData, overview: e.target.value })}
                     rows={4}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                   />
                 </div>
 
@@ -644,7 +633,7 @@ export default function RetreatWorkshopsPage() {
                     value={formData.tagline}
                     onChange={(e) => setFormData({ ...formData, tagline: e.target.value })}
                     rows={2}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                   />
                 </div>
 
@@ -652,13 +641,13 @@ export default function RetreatWorkshopsPage() {
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Objectives
                   </label>
-                  <div className="flex gap-2 mb-2">
+                  <div className="flex flex-col sm:flex-row gap-2 mb-2">
                     <input
                       type="text"
                       value={newObjective}
                       onChange={(e) => setNewObjective(e.target.value)}
                       onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addObjective())}
-                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                       placeholder="Add objective"
                     />
                     <button
@@ -689,12 +678,12 @@ export default function RetreatWorkshopsPage() {
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Program Outline
                   </label>
-                  <div className="grid grid-cols-2 gap-2 mb-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-2">
                     <input
                       type="text"
                       value={newProgramDate}
                       onChange={(e) => setNewProgramDate(e.target.value)}
-                      className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                       placeholder="Date (e.g., Feb 17)"
                     />
                     <input
@@ -702,7 +691,7 @@ export default function RetreatWorkshopsPage() {
                       value={newProgramActivity}
                       onChange={(e) => setNewProgramActivity(e.target.value)}
                       onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addProgramDay())}
-                      className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                       placeholder="Activity"
                     />
                   </div>
@@ -739,7 +728,7 @@ export default function RetreatWorkshopsPage() {
                     type="text"
                     value={formData.dailyRhythm}
                     onChange={(e) => setFormData({ ...formData, dailyRhythm: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                     placeholder="Daily rhythm: breakfast around the fire, mindful breaks, evening gatherings."
                   />
                 </div>
@@ -748,13 +737,13 @@ export default function RetreatWorkshopsPage() {
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Accommodation Options
                   </label>
-                  <div className="flex gap-2 mb-2">
+                  <div className="flex flex-col sm:flex-row gap-2 mb-2">
                     <input
                       type="text"
                       value={newAccommodation}
                       onChange={(e) => setNewAccommodation(e.target.value)}
                       onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addAccommodation())}
-                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                       placeholder="Add accommodation option"
                     />
                     <button
@@ -789,7 +778,7 @@ export default function RetreatWorkshopsPage() {
                     value={formData.meals}
                     onChange={(e) => setFormData({ ...formData, meals: e.target.value })}
                     rows={3}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                   />
                 </div>
 
@@ -801,7 +790,7 @@ export default function RetreatWorkshopsPage() {
                     value={formData.volunteerPathway}
                     onChange={(e) => setFormData({ ...formData, volunteerPathway: e.target.value })}
                     rows={2}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                   />
                 </div>
 
@@ -809,13 +798,13 @@ export default function RetreatWorkshopsPage() {
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                     Facilitators & Partners
                   </label>
-                  <div className="flex gap-2 mb-2">
+                  <div className="flex flex-col sm:flex-row gap-2 mb-2">
                     <input
                       type="text"
                       value={newFacilitator}
                       onChange={(e) => setNewFacilitator(e.target.value)}
                       onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addFacilitator())}
-                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                       placeholder="Add facilitator/partner"
                     />
                     <button
@@ -850,7 +839,7 @@ export default function RetreatWorkshopsPage() {
                     value={formData.story}
                     onChange={(e) => setFormData({ ...formData, story: e.target.value })}
                     rows={3}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                   />
                 </div>
 
@@ -869,7 +858,7 @@ export default function RetreatWorkshopsPage() {
                     multiple
                     onChange={handleImageSelect}
                     ref={imageInputRef}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white mb-2"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white mb-2"
                     disabled={!formData.title || (formData.imageUrls?.length || 0) >= 10}
                   />
                   {!formData.title && (
@@ -883,7 +872,7 @@ export default function RetreatWorkshopsPage() {
                     </p>
                   )}
                   {formData.imageUrls && formData.imageUrls.length > 0 && (
-                    <div className="grid grid-cols-3 gap-2 mt-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-2">
                       {formData.imageUrls.map((url, idx) => (
                         <div key={idx} className="relative">
                           <Image
@@ -908,7 +897,7 @@ export default function RetreatWorkshopsPage() {
                   )}
                 </div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                   <label className="flex items-center">
                     <input
                       type="checkbox"
@@ -928,25 +917,25 @@ export default function RetreatWorkshopsPage() {
                       type="number"
                       value={formData.order}
                       onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) || 0 })}
-                      className="w-24 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      className="w-full sm:w-24 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                     />
                   </div>
                 </div>
 
-                <div className="flex justify-end gap-3 pt-4">
+                <div className="flex flex-col sm:flex-row justify-end gap-3 pt-4">
                   <button
                     type="button"
                     onClick={() => {
                       setShowForm(false);
                       setEditingWorkshop(null);
                     }}
-                    className="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
+                    className="w-full sm:w-auto px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 rounded-lg transition-colors"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors"
+                    className="w-full sm:w-auto px-4 py-2 text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg transition-colors"
                   >
                     {editingWorkshop ? 'Update' : 'Create'} Workshop
                   </button>

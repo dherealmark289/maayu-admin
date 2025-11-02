@@ -254,8 +254,13 @@ export default function VisionPage() {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (!file.type.startsWith('image/')) {
-      setError('Please select an image file');
+    // Allow PNG, JPEG, and JPG formats
+    const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+    const fileExtension = file.name.toLowerCase().split('.').pop();
+    const isValidType = allowedTypes.includes(file.type) || ['png', 'jpg', 'jpeg'].includes(fileExtension || '');
+    
+    if (!isValidType) {
+      setError('Please select a PNG, JPEG, or JPG image file');
       return;
     }
 
@@ -348,13 +353,13 @@ export default function VisionPage() {
 
   return (
     <DashboardLayout>
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Vision Page Content</h1>
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 lg:p-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+          <h1 className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white">Vision Page Content</h1>
           <button
             onClick={handleSave}
             disabled={saving}
-            className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors text-sm font-medium disabled:opacity-50"
+            className="w-full sm:w-auto px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors text-sm font-medium disabled:opacity-50"
           >
             {saving ? 'Saving...' : 'Save Changes'}
           </button>
@@ -368,7 +373,7 @@ export default function VisionPage() {
 
         <div className="space-y-8">
           {/* Intro Section */}
-          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
+          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 lg:p-6 border border-gray-200 dark:border-gray-600">
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Intro Section</h2>
             <div className="space-y-4">
               <div>
@@ -441,7 +446,7 @@ export default function VisionPage() {
                         if (el) imageInputs[`zone-${zone.name}`] = el;
                       }}
                       type="file"
-                      accept="image/*"
+                      accept="image/png,image/jpeg,image/jpg"
                       onChange={(e) => handleImageSelect(e, zone.name)}
                       className="hidden"
                     />
@@ -545,7 +550,7 @@ export default function VisionPage() {
           </div>
 
           {/* Ecosystem Card */}
-          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 border border-gray-200 dark:border-gray-600">
+          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 lg:p-6 border border-gray-200 dark:border-gray-600">
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Ecosystem Card</h2>
             
             <div className="space-y-4">
@@ -558,7 +563,7 @@ export default function VisionPage() {
                     if (el) imageInputs['ecosystem'] = el;
                   }}
                   type="file"
-                  accept="image/*"
+                  accept="image/png,image/jpeg,image/jpg"
                   onChange={(e) => handleImageSelect(e, undefined, 'ecosystem')}
                   className="hidden"
                 />
@@ -624,7 +629,7 @@ export default function VisionPage() {
           <button
             onClick={handleSave}
             disabled={saving}
-            className="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors text-sm font-medium disabled:opacity-50"
+            className="w-full sm:w-auto px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors text-sm font-medium disabled:opacity-50"
           >
             {saving ? 'Saving...' : 'Save All Changes'}
           </button>

@@ -383,16 +383,16 @@ export default function GalleryPage() {
 
   return (
     <DashboardLayout>
-      <div className="p-8">
-        <div className="mb-6 flex items-center justify-between">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Gallery</h1>
+      <div className="p-4 lg:p-8">
+        <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <h1 className="text-xl lg:text-3xl font-bold text-gray-900 dark:text-white">Gallery</h1>
           <button
             onClick={() => {
               setShowAlbumForm(true);
               setEditingAlbum(null);
               setAlbumFormData({ name: '', description: '' });
             }}
-            className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors"
+            className="w-full sm:w-auto px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors"
           >
             Create New Album
           </button>
@@ -418,7 +418,7 @@ export default function GalleryPage() {
                   type="text"
                   value={albumFormData.name}
                   onChange={(e) => setAlbumFormData({ ...albumFormData, name: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                   placeholder="e.g., Summer 2024"
                 />
               </div>
@@ -429,7 +429,7 @@ export default function GalleryPage() {
                 <textarea
                   value={albumFormData.description}
                   onChange={(e) => setAlbumFormData({ ...albumFormData, description: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
                   rows={3}
                   placeholder="Album description..."
                 />
@@ -447,7 +447,7 @@ export default function GalleryPage() {
                     setEditingAlbum(null);
                     setAlbumFormData({ name: '', description: '' });
                   }}
-                  className="px-4 py-2 bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500 text-gray-800 dark:text-white rounded-lg transition-colors"
+                  className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors text-sm font-medium"
                 >
                   Cancel
                 </button>
@@ -490,7 +490,7 @@ export default function GalleryPage() {
                     <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{album.description}</p>
                   )}
                   <p className="text-sm text-gray-500 dark:text-gray-500">{album.imageCount || 0} images</p>
-                  <div className="mt-3 flex space-x-2">
+                  <div className="mt-3 flex flex-col sm:flex-row gap-2">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
@@ -498,7 +498,7 @@ export default function GalleryPage() {
                         setAlbumFormData({ name: album.name, description: album.description || '' });
                         setShowAlbumForm(true);
                       }}
-                      className="px-3 py-1 text-sm bg-blue-500 hover:bg-blue-600 text-white rounded transition-colors"
+                      className="px-3 py-2 text-sm bg-blue-500 hover:bg-blue-600 text-white rounded transition-colors w-full sm:w-auto"
                     >
                       Edit
                     </button>
@@ -507,7 +507,7 @@ export default function GalleryPage() {
                         e.stopPropagation();
                         handleDeleteAlbum(album.id);
                       }}
-                      className="px-3 py-1 text-sm bg-red-500 hover:bg-red-600 text-white rounded transition-colors"
+                      className="px-3 py-2 text-sm bg-red-500 hover:bg-red-600 text-white rounded transition-colors w-full sm:w-auto"
                     >
                       Delete
                     </button>
@@ -520,16 +520,16 @@ export default function GalleryPage() {
 
         {selectedAlbum && (
           <div className="mt-8 p-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-300 dark:border-gray-600">
-            <div className="flex items-center justify-between mb-4">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-4">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{selectedAlbum.name}</h2>
+                <h2 className="text-xl lg:text-2xl font-bold text-gray-900 dark:text-white">{selectedAlbum.name}</h2>
                 {selectedAlbum.description && (
                   <p className="text-gray-600 dark:text-gray-400 mt-1">{selectedAlbum.description}</p>
                 )}
               </div>
               <button
                 onClick={() => setSelectedAlbum(null)}
-                className="px-4 py-2 bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500 text-gray-800 dark:text-white rounded-lg transition-colors"
+                className="w-full sm:w-auto px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors text-sm font-medium"
               >
                 Close Album
               </button>
@@ -548,13 +548,13 @@ export default function GalleryPage() {
               <button
                 onClick={() => fileInputRef.current?.click()}
                 disabled={uploading}
-                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors disabled:opacity-50"
+                className="w-full sm:w-auto px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition-colors disabled:opacity-50"
               >
                 {uploading ? 'Uploading...' : 'Add Images to Album'}
               </button>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
               {albumImages.map((image) => (
                 <div key={image.id} className="relative group">
                   <Image
